@@ -14,7 +14,7 @@ const piscina = new Piscina({
 
 async function start() {
   await client.connect();
-	await client.set("fe8b716c", Number(await piscina.run(10)));
+	await client.set("fe8b716c", (await piscina.run(10)).toString());
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
