@@ -1,15 +1,13 @@
-"use strict";
-
 const http = require("http");
-const autocannon = require("autocannon");
+const autocannon = require ("autocannon");
 
 function createHandler(serverName) {
-  return function (req, res) {
+  return function () {
     console.log(serverName + " received request");
   };
 }
 
-const server1 = http.createServer(createHandler("server2"));
+const server1 = http.createServer(createHandler("Output testing server"));
 
 server1.listen(0, startBench);
 

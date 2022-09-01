@@ -24,6 +24,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: password
+      APPLICATION_PORT: 4000
     command: npm run dev
 
 volumes:
