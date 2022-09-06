@@ -1,12 +1,33 @@
-function fib(index: number): BigInt {
-  let last = BigInt(0);
-  let sum = BigInt(1);
+interface FibInput {
+  index: number;
+  objectResult: boolean;
+}
 
-  for (; index >= BigInt(2); index--) {
+type ObjectOutput = { [key: string]: string };
+
+function fib(input: FibInput): BigInt | ObjectOutput {
+  const { index, objectResult } = input;
+
+  const result: ObjectOutput = {
+    "1": "0",
+    "2": "1",
+  };
+
+  let last = 0n;
+  let sum = 1n;
+
+  for (let i = 2; i <= index; i++) {
     [last, sum] = [sum, sum + last];
+    if (objectResult) {
+      result[i] = last.toString();
+    }
   }
 
-  return sum;
+  if (objectResult) {
+    return result;
+  }
+
+  return last;
 }
 
 export default fib;
