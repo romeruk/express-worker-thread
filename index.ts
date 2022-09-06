@@ -16,12 +16,14 @@ const initializeFibNumbers = async () => {
 
     if (!initialized) {
 			console.log("Start initialization values");
-      const result = await piscina.run({
+
+      await piscina.run({
         index: 100000,
         objectResult: true,
       });
 
-      await Promise.all([client.MSET(result), client.set("initialized", 1)]);
+			await client.SET("initialized", 1);
+
       console.log("Finished initialization values");
     } else {
       console.log("already initialized");
@@ -61,11 +63,11 @@ async function start() {
         ticket,
       });
 
-      const calcFibonacci = await piscina.run({
+      await piscina.run({
         index: number,
+				ticket
       });
 
-      await client.set(`${ticket}`, calcFibonacci.toString());
     } catch (error) {
       res.status(500).send({
         message: "Server error",
