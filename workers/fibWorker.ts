@@ -34,6 +34,7 @@ async function fib(input: FibInput): Promise<void> {
         result = {};
       }
     }
+		return;
   }
 
 	let last = 0n;
