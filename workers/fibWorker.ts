@@ -2,7 +2,7 @@ import client from "../redis";
 interface FibInput {
   index: number;
   objectResult?: boolean;
-	ticket?: number;
+  ticket?: number;
 }
 
 type ObjectOutput = { [key: string]: string };
@@ -14,39 +14,34 @@ async function fib(input: FibInput): Promise<void> {
 
   await client.connect();
 
-  if (objectResult) {
-    let result: ObjectOutput = {
-      "1": "0",
-      "2": "1",
-    };
+  let last = 0n;
+  let sum = 1n;
 
-    let last = 0n;
-    let sum = 1n;
+  let result: ObjectOutput = {
+    "1": "0",
+    "2": "1",
+  };
 
-    let count = 0;
-
-    for (let i = 2; i <= index; i++) {
-      [last, sum] = [sum, sum + last];
-      result[i] = last.toString();
-      count++;
-      if (count >= BULK_ELEMENTS_LIMIT) {
+  for (let i = 2; i <= index; i++) {
+    [last, sum] = [sum, sum + last];
+    if (objectResult) {
+      result[index] = last.toString();
+      if (
+        i >= BULK_ELEMENTS_LIMIT ||
+        (i < BULK_ELEMENTS_LIMIT && i === index)
+      ) {
         await client.MSET(result);
+        console.log("result");
         result = {};
       }
     }
-		return;
+
+    if (!objectResult) {
+      await client.SET(`${ticket}`, last.toString());
+    }
   }
 
-	let last = 0n;
-	let sum = 1n;
-
-  for (let i = 2; i <= index; i++) {
-		[last, sum] = [sum, sum + last];
-  }
-
-	await client.SET(`${ticket}`, last.toString());
   await client.disconnect();
-
 }
 
 export default fib;

@@ -18,7 +18,7 @@ const initializeFibNumbers = async () => {
 			console.log("Start initialization values");
 
       await piscina.run({
-        index: 100000,
+        index: 10000,
         objectResult: true,
       });
 
@@ -59,12 +59,12 @@ async function start() {
         });
       }
 
-      res.send({
-        ticket,
-      });
+			res.send({
+				ticket,
+			});
 
       await piscina.run({
-        index: number,
+				index: number,
 				ticket
       });
 
@@ -88,6 +88,7 @@ async function start() {
       res.status(404).send({
         message: "Not found",
       });
+
     } catch (error) {
       res.status(500).send({
         message: "Server error",
